@@ -3,7 +3,6 @@ package com.BioStace.AutoTransfer.Block;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.BiochemistryCraft.BiochemistryCraft;
 
 import com.BioStace.AutoTransfer.AutoTransfer;
 import com.BioStace.AutoTransfer.Registry.BlockRegistry;
@@ -32,7 +31,7 @@ public class BlockTransOrbit extends Block {
 	public BlockTransOrbit() {
 		super(Material.circuits);
 		this.setBlockName("transOrbit");
-		this.setCreativeTab(AutoTransfer.ct);
+		this.setCreativeTab(AutoTransfer.autotransfer);
 		this.setHardness(0.5f);
 		this.setResistance(10.0f);
 		this.setLightLevel(1.0f);
@@ -93,16 +92,16 @@ public class BlockTransOrbit extends Block {
 	}
 
 	/**
-	 * È¡¹ìµÀËÄÖÜ·½¿éÊÇ·ñÊÇ¹ìµÀ¡£
+	 * È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü·ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @param world
-	 *            - ¸Ã·½¿éËùÔÚµÄÊÀ½ç
+	 *            - ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param x
-	 *            - ¸Ã·½¿éµÄx
+	 *            - ï¿½Ã·ï¿½ï¿½ï¿½ï¿½x
 	 * @param y
-	 *            - ¸Ã·½¿éµÄy
+	 *            - ï¿½Ã·ï¿½ï¿½ï¿½ï¿½y
 	 * @param z
-	 *            - ¸Ã·½¿éµÄz
+	 *            - ï¿½Ã·ï¿½ï¿½ï¿½ï¿½z
 	 * @return 0 - N, 1 - S, 2 - W, 3 - E
 	 */
 	private List<Boolean> getSide(World world, int x, int y, int z) {

@@ -12,9 +12,9 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 public class AutoTransfer {
 
 	public static final String MODID = "autotransmod";
-	public static final String NAME = "autotransmod";
+	public static final String NAME = "AutoTransfer";
 	public static final String Version = "1.0.1";
-	public static CreativeTab ct = new CreativeTab();
+	public static ATCreativeTab autotransfer = new ATCreativeTab();
 
 	@EventHandler
 	public void preLoad(FMLPreInitializationEvent event) {
