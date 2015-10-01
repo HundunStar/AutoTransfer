@@ -1,0 +1,10 @@
+language: java
+jdk:
+      - oraclejdk7
+      - openjdk7
+      - openjdk6
+script:
+      - jdk_switcher use oraclejdk7
+      - # do stuff with Java 7
+      - jdk_switcher use openjdk6
+      - # do stuff with Java 6
