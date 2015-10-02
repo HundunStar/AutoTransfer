@@ -21,17 +21,16 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class BlockTransOrbit extends Block {
-	@SideOnly(Side.CLIENT)
+	//@SideOnly(Side.CLIENT)
 	private IIcon[] iconArray = new IIcon[6];
-	@SideOnly(Side.CLIENT)
-	private IIcon iconBase;
+	private IIcon round;
 
 	/*
 	 * metadata: 0 - NS, 1 - WE, 2 - NW, 3 - NE, 4 - SW, 5 - SE
 	 */
 
 	public BlockTransOrbit() {
-		super(Material.iron);
+		super(Material.circuits);
 		this.setBlockName("transOrbit");
 		this.setCreativeTab(AutoTransfer.autotransfer);
 		this.setHardness(0.5f);
@@ -39,6 +38,7 @@ public class BlockTransOrbit extends Block {
 		this.setLightLevel(1.0f);
 		this.setHarvestLevel("pickaxe", 0);
 		this.setStepSound(Block.soundTypeMetal);
+		this.setBlockBounds(0.0f, 0.0f,0.0f, 1.0f,0.25f, 1.0f);
 	}
 
 	/*
@@ -48,11 +48,7 @@ public class BlockTransOrbit extends Block {
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z,
 			Block block) {
-		List<Boolean> r = new ArrayList(); // 0 - N, 1 - S, 2 - W, 3 - E
-		r.add(world.getBlock(x, y, z - 1) == BlockRegistry.transOrbit);
-		r.add(world.getBlock(x, y, z + 1) == BlockRegistry.transOrbit);
-		r.add(world.getBlock(x - 1, y, z) == BlockRegistry.transOrbit);
-		r.add(world.getBlock(x + 1, y, z) == BlockRegistry.transOrbit);
+		List<Boolean> r = getSide(world, x, y, z);
 		int i = 0;
 		for (boolean a : r) {
 			if (a)
@@ -97,9 +93,32 @@ public class BlockTransOrbit extends Block {
 		}
 	}
 
+	/**
+	 * ȡ������ܷ����Ƿ��ǹ����
+	 * 
+	 * @param world
+	 *            - �÷������ڵ�����
+	 * @param x
+	 *            - �÷����x
+	 * @param y
+	 *            - �÷����y
+	 * @param z
+	 *            - �÷����z
+	 * @return 0 - N, 1 - S, 2 - W, 3 - E
+	 */
+	private List<Boolean> getSide(World world, int x, int y, int z) {
+		List<Boolean> r = new ArrayList();
+		r.add(world.getBlock(x, y, z - 1) == BlockRegistry.transOrbit);
+		r.add(world.getBlock(x, y, z + 1) == BlockRegistry.transOrbit);
+		r.add(world.getBlock(x - 1, y, z) == BlockRegistry.transOrbit);
+		r.add(world.getBlock(x + 1, y, z) == BlockRegistry.transOrbit);
+		return r;
+	}
+
 	public boolean isOpaqueCube() {
 		return false;
 	}
+
 
 	/*
 	 * Block Graph
@@ -108,13 +127,16 @@ public class BlockTransOrbit extends Block {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon (int side, int metadata) {
-		if (side != 1) {
-			return this.iconBase;
+		if(side==1 || side==0)
+		{
+			if (metadata > iconArray.length || metadata < 0) {
+				metadata = 0;
+			}
+			return this.iconArray[metadata];
 		}
-		if (metadata > iconArray.length || metadata < 0) {
-			metadata = 0;
-		}
-		return this.iconArray[metadata];
+		else
+			return this.round;
+		
 	}
 
 	@Override
@@ -124,7 +146,7 @@ public class BlockTransOrbit extends Block {
 			this.iconArray[i] = arg0.registerIcon(AutoTransfer.MODID
 					+ ":transOrbit_" + i);
 		}
-		this.iconBase = arg0.registerIcon(AutoTransfer.MODID + ":transOrbitBase");
+		this.round=arg0.registerIcon(AutoTransfer.MODID+":transOrbit");
 	}
 	
 	/*
