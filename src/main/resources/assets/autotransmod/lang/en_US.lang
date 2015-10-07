@@ -1,0 +1,3 @@
+tile.transOrbit.name=TransferOrbit
+item.TransCart.name=TransferCart
+itemGroup.AutoTransfer=AutoのTransfer
