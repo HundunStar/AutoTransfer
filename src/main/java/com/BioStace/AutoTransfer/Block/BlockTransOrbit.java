@@ -3,9 +3,9 @@ package com.BioStace.AutoTransfer.Block;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import com.BioStace.AutoTransfer.AutoTransfer;
 import com.BioStace.AutoTransfer.Registry.BlockRegistry;
+import com.sun.org.apache.bcel.internal.generic.GOTO;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockTransOrbit extends Block {
@@ -27,6 +28,12 @@ public class BlockTransOrbit extends Block {
 
 	/*
 	 * metadata: 0 - NS, 1 - WE, 2 - NW, 3 - NE, 4 - SW, 5 - SE
+	 * 0 - North-South(clock12-clock6,vertical line)
+	 * 1 - West-East(clock9-clock3,horizontal line)
+	 * 2 - North-West(clock12-clock9)
+	 * 3 - North-East(clock12-clock3)
+	 * 4 - South-West(clock6-clock9)
+	 * 5 - South-East(clock6-clock3)
 	 */
 
 	public BlockTransOrbit() {
@@ -40,7 +47,11 @@ public class BlockTransOrbit extends Block {
 		this.setStepSound(Block.soundTypeMetal);
 		this.setBlockBounds(0.0f, 0.0f,0.0f, 1.0f,0.25f, 1.0f);
 	}
-
+	    public AxisAlignedBB getCollisionBoundingBoxFromPool(World p_149668_1_, int p_149668_2_, int p_149668_3_, int p_149668_4_)
+	    {
+	        this.setBlockBoundsBasedOnState(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
+	        return super.getCollisionBoundingBoxFromPool(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
+	    }
 	/*
 	 * Block State
 	 */
@@ -144,7 +155,7 @@ public class BlockTransOrbit extends Block {
 	public void registerBlockIcons (IIconRegister arg0) {
 		for (int i = 0; i < iconArray.length; i++) {
 			this.iconArray[i] = arg0.registerIcon(AutoTransfer.MODID
-					+ ":transOrbit_" + i);
+					+ ":transOrbit_" + i + "_1");
 		}
 		this.round=arg0.registerIcon(AutoTransfer.MODID+":transOrbit");
 	}
@@ -175,4 +186,51 @@ public class BlockTransOrbit extends Block {
 		}
 		this.onNeighborBlockChange(world, x, y, z, world.getBlock(x, y, z));
 	}
+	    public void setBlockBoundsForItemRender()
+	    {
+	        float f1 = 0.25F;
+	        float f10 = 0.34375F;
+		this.setBlockBounds(f10, 0f, 0f, 1f - f10, f1, 1f);
+	    }
+	    public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_)
+	    {
+	        int l = p_149719_1_.getBlockMetadata(p_149719_2_, p_149719_3_, p_149719_4_);
+	        this.func_150043_b(l);
+	    }
+
+	    private void func_150043_b(int p_150043_1_)
+	    {
+	        int j = p_150043_1_ & 7;
+	        boolean flag = (p_150043_1_ & 8) > 0;
+	        float f1 = 0.25F;
+	        float f10 = 0.34375F;
+	        if (flag)
+	        {
+//	            f3 = 0.0625F;
+	        }
+	        switch (j) {
+		case 0:
+		    this.setBlockBounds(f10, 0f, 0f, 1f - f10, f1, 1f);
+		    break;
+		case 1:
+		    this.setBlockBounds(0f, 0f, f10, 1f, f1, 1f - f10);
+		    break;
+		case 2:
+		    this.setBlockBounds(0f, 0f, 0f, 1f - f10, f1, 1f - f10);
+		    break;
+		case 3:
+		    this.setBlockBounds(f10, 0f, 0f, 1f, f1, 1f - f10);
+		    break;
+		case 4:
+		    this.setBlockBounds(0f, 0f, f10, 1f - f10, f1, 1f);
+		    break;
+		case 5:
+		    this.setBlockBounds(f10, 0f, f10, 1f, f1, 1f);
+		    break;
+		default:
+			this.setBlockBounds(0.0f, 0.0f,0.0f, 1.0f,0.25f, 1.0f);
+		    break;
+		}
+
+	    }
 }
