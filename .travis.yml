@@ -9,5 +9,3 @@ script:
       - # do stuff with Java 7
       - jdk_switcher use openjdk6
       - # do stuff with Java 6
-      - chmod +x gradlew
-      - ./gradlew setupDecompWorkspace build
