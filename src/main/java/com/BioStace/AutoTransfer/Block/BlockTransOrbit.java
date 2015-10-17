@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.BioStace.AutoTransfer.AutoTransfer;
 import com.BioStace.AutoTransfer.Registry.BlockRegistry;
-import com.sun.org.apache.bcel.internal.generic.GOTO;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -46,6 +45,7 @@ public class BlockTransOrbit extends Block {
 		this.setLightLevel(1.0f);
 		this.setHarvestLevel("pickaxe", 0);
 		this.setStepSound(Block.soundTypeMetal);
+		this.setBlockBounds(0.0f, 0.0f,0.0f, 1.0f,0.25f, 1.0f);
 	}
 	    public AxisAlignedBB getCollisionBoundingBoxFromPool(World p_149668_1_, int p_149668_2_, int p_149668_3_, int p_149668_4_)
 	    {
@@ -133,9 +133,9 @@ public class BlockTransOrbit extends Block {
 	public void registerBlockIcons (IIconRegister arg0) {
 		for (int i = 0; i < iconArray.length; i++) {
 			this.iconArray[i] = arg0.registerIcon(AutoTransfer.MODID
-					+ ":transOrbit_" + i + "_1");
+					+ ":transOrbit_" + i);
 		}
-		this.iconBase = arg0.registerIcon(AutoTransfer.MODID + ":transOrbitBase");
+		this.iconBase = arg0.registerIcon(AutoTransfer.MODID + ":transOrbit");
 	}
 	
 	/*
@@ -164,51 +164,4 @@ public class BlockTransOrbit extends Block {
 		}
 		this.onNeighborBlockChange(world, x, y, z, world.getBlock(x, y, z));
 	}
-	    public void setBlockBoundsForItemRender()
-	    {
-	        float f1 = 0.25F;
-	        float f10 = 0.34375F;
-		this.setBlockBounds(f10, 0f, 0f, 1f - f10, f1, 1f);
-	    }
-	    public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_)
-	    {
-	        int l = p_149719_1_.getBlockMetadata(p_149719_2_, p_149719_3_, p_149719_4_);
-	        this.func_150043_b(l);
-	    }
-
-	    private void func_150043_b(int p_150043_1_)
-	    {
-	        int j = p_150043_1_ & 7;
-	        boolean flag = (p_150043_1_ & 8) > 0;
-	        float f1 = 0.25F;
-	        float f10 = 0.34375F;
-	        if (flag)
-	        {
-//	            f3 = 0.0625F;
-	        }
-	        switch (j) {
-		case 0:
-		    this.setBlockBounds(f10, 0f, 0f, 1f - f10, f1, 1f);
-		    break;
-		case 1:
-		    this.setBlockBounds(0f, 0f, f10, 1f, f1, 1f - f10);
-		    break;
-		case 2:
-		    this.setBlockBounds(0f, 0f, 0f, 1f - f10, f1, 1f - f10);
-		    break;
-		case 3:
-		    this.setBlockBounds(f10, 0f, 0f, 1f, f1, 1f - f10);
-		    break;
-		case 4:
-		    this.setBlockBounds(0f, 0f, f10, 1f - f10, f1, 1f);
-		    break;
-		case 5:
-		    this.setBlockBounds(f10, 0f, f10, 1f, f1, 1f);
-		    break;
-		default:
-			this.setBlockBounds(0.0f, 0.0f,0.0f, 1.0f,0.25f, 1.0f);
-		    break;
-		}
-
-	    }
 }

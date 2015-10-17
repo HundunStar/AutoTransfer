@@ -1,6 +1,7 @@
 package com.BioStace.AutoTransfer;
 
 import com.BioStace.AutoTransfer.Registry.BlockRegistry;
+import com.BioStace.AutoTransfer.Registry.ItemRegistry;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -19,6 +20,7 @@ public class AutoTransfer {
 	@EventHandler
 	public void preLoad(FMLPreInitializationEvent event) {
 		BlockRegistry.init();
+		ItemRegistry.init();
 	}
 
 	@EventHandler
