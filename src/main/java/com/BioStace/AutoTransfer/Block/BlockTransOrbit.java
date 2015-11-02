@@ -1,5 +1,6 @@
 package com.BioStace.AutoTransfer.Block;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockTransOrbit extends Block {
@@ -28,12 +28,6 @@ public class BlockTransOrbit extends Block {
 
 	/*
 	 * metadata: 0 - NS, 1 - WE, 2 - NW, 3 - NE, 4 - SW, 5 - SE
-	 * 0 - North-South(clock12-clock6,vertical line)
-	 * 1 - West-East(clock9-clock3,horizontal line)
-	 * 2 - North-West(clock12-clock9)
-	 * 3 - North-East(clock12-clock3)
-	 * 4 - South-West(clock6-clock9)
-	 * 5 - South-East(clock6-clock3)
 	 */
 
 	public BlockTransOrbit() {
@@ -45,13 +39,8 @@ public class BlockTransOrbit extends Block {
 		this.setLightLevel(1.0f);
 		this.setHarvestLevel("pickaxe", 0);
 		this.setStepSound(Block.soundTypeMetal);
-		this.setBlockBounds(0.0f, 0.0f,0.0f, 1.0f,0.25f, 1.0f);
 	}
-	    public AxisAlignedBB getCollisionBoundingBoxFromPool(World p_149668_1_, int p_149668_2_, int p_149668_3_, int p_149668_4_)
-	    {
-	        this.setBlockBoundsBasedOnState(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
-	        return super.getCollisionBoundingBoxFromPool(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
-	    }
+
 	/*
 	 * Block State
 	 */
@@ -135,7 +124,7 @@ public class BlockTransOrbit extends Block {
 			this.iconArray[i] = arg0.registerIcon(AutoTransfer.MODID
 					+ ":transOrbit_" + i);
 		}
-		this.iconBase = arg0.registerIcon(AutoTransfer.MODID + ":transOrbit");
+		this.iconBase = arg0.registerIcon(AutoTransfer.MODID + ":transOrbitBase");
 	}
 	
 	/*

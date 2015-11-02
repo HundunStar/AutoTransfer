@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 
 public class EntityTransCartBase extends Entity{
 
+	
 	public EntityTransCartBase(World p_i1582_1_) {
 		super(p_i1582_1_);
 		// TODO 自动生成的构造函数存根
@@ -108,12 +109,12 @@ public class EntityTransCartBase extends Entity{
 	
 	public boolean isOnRail(int x,int y,int z){
 		
-if(this.worldObj.getBlock(x,y,z)==BlockRegistry.transOrbit||this.worldObj.getBlock(x, y-1, z)==BlockRegistry.transOrbit){
-	return true;
-}
-else{
-	return false;
-}
+		if(this.worldObj.getBlock(x,y,z)==BlockRegistry.transOrbit||this.worldObj.getBlock(x, y-1, z)==BlockRegistry.transOrbit){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 }
