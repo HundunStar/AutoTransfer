@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.BioStace.AutoTransfer.AutoTransfer;
 import com.BioStace.AutoTransfer.Registry.BlockRegistry;
-import com.sun.org.apache.bcel.internal.generic.GOTO;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,9 +21,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockTransOrbit extends Block {
-	//@SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	private IIcon[] iconArray = new IIcon[6];
-	private IIcon round;
+	@SideOnly(Side.CLIENT)
+	private IIcon iconBase;
 
 	/*
 	 * metadata: 0 - NS, 1 - WE, 2 - NW, 3 - NE, 4 - SW, 5 - SE
@@ -37,7 +37,7 @@ public class BlockTransOrbit extends Block {
 	 */
 
 	public BlockTransOrbit() {
-		super(Material.circuits);
+		super(Material.iron);
 		this.setBlockName("transOrbit");
 		this.setCreativeTab(AutoTransfer.autotransfer);
 		this.setHardness(0.5f);
@@ -59,7 +59,11 @@ public class BlockTransOrbit extends Block {
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z,
 			Block block) {
-		List<Boolean> r = getSide(world, x, y, z);
+		List<Boolean> r = new ArrayList(); // 0 - N, 1 - S, 2 - W, 3 - E
+		r.add(world.getBlock(x, y, z - 1) == BlockRegistry.transOrbit);
+		r.add(world.getBlock(x, y, z + 1) == BlockRegistry.transOrbit);
+		r.add(world.getBlock(x - 1, y, z) == BlockRegistry.transOrbit);
+		r.add(world.getBlock(x + 1, y, z) == BlockRegistry.transOrbit);
 		int i = 0;
 		for (boolean a : r) {
 			if (a)
@@ -104,32 +108,9 @@ public class BlockTransOrbit extends Block {
 		}
 	}
 
-	/**
-	 * ȡ������ܷ����Ƿ��ǹ����
-	 * 
-	 * @param world
-	 *            - �÷������ڵ�����
-	 * @param x
-	 *            - �÷����x
-	 * @param y
-	 *            - �÷����y
-	 * @param z
-	 *            - �÷����z
-	 * @return 0 - N, 1 - S, 2 - W, 3 - E
-	 */
-	private List<Boolean> getSide(World world, int x, int y, int z) {
-		List<Boolean> r = new ArrayList();
-		r.add(world.getBlock(x, y, z - 1) == BlockRegistry.transOrbit);
-		r.add(world.getBlock(x, y, z + 1) == BlockRegistry.transOrbit);
-		r.add(world.getBlock(x - 1, y, z) == BlockRegistry.transOrbit);
-		r.add(world.getBlock(x + 1, y, z) == BlockRegistry.transOrbit);
-		return r;
-	}
-
 	public boolean isOpaqueCube() {
 		return false;
 	}
-
 
 	/*
 	 * Block Graph
@@ -138,16 +119,13 @@ public class BlockTransOrbit extends Block {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon (int side, int metadata) {
-		if(side==1 || side==0)
-		{
-			if (metadata > iconArray.length || metadata < 0) {
-				metadata = 0;
-			}
-			return this.iconArray[metadata];
+		if (side != 1) {
+			return this.iconBase;
 		}
-		else
-			return this.round;
-		
+		if (metadata > iconArray.length || metadata < 0) {
+			metadata = 0;
+		}
+		return this.iconArray[metadata];
 	}
 
 	@Override
@@ -155,9 +133,9 @@ public class BlockTransOrbit extends Block {
 	public void registerBlockIcons (IIconRegister arg0) {
 		for (int i = 0; i < iconArray.length; i++) {
 			this.iconArray[i] = arg0.registerIcon(AutoTransfer.MODID
-					+ ":transOrbit_" + i + "_1");
+					+ ":transOrbit_" + i);
 		}
-		this.round=arg0.registerIcon(AutoTransfer.MODID+":transOrbit");
+		this.iconBase = arg0.registerIcon(AutoTransfer.MODID + ":transOrbit");
 	}
 	
 	/*
@@ -186,51 +164,4 @@ public class BlockTransOrbit extends Block {
 		}
 		this.onNeighborBlockChange(world, x, y, z, world.getBlock(x, y, z));
 	}
-	    public void setBlockBoundsForItemRender()
-	    {
-	        float f1 = 0.25F;
-	        float f10 = 0.34375F;
-		this.setBlockBounds(f10, 0f, 0f, 1f - f10, f1, 1f);
-	    }
-	    public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_)
-	    {
-	        int l = p_149719_1_.getBlockMetadata(p_149719_2_, p_149719_3_, p_149719_4_);
-	        this.func_150043_b(l);
-	    }
-
-	    private void func_150043_b(int p_150043_1_)
-	    {
-	        int j = p_150043_1_ & 7;
-	        boolean flag = (p_150043_1_ & 8) > 0;
-	        float f1 = 0.25F;
-	        float f10 = 0.34375F;
-	        if (flag)
-	        {
-//	            f3 = 0.0625F;
-	        }
-	        switch (j) {
-		case 0:
-		    this.setBlockBounds(f10, 0f, 0f, 1f - f10, f1, 1f);
-		    break;
-		case 1:
-		    this.setBlockBounds(0f, 0f, f10, 1f, f1, 1f - f10);
-		    break;
-		case 2:
-		    this.setBlockBounds(0f, 0f, 0f, 1f - f10, f1, 1f - f10);
-		    break;
-		case 3:
-		    this.setBlockBounds(f10, 0f, 0f, 1f, f1, 1f - f10);
-		    break;
-		case 4:
-		    this.setBlockBounds(0f, 0f, f10, 1f - f10, f1, 1f);
-		    break;
-		case 5:
-		    this.setBlockBounds(f10, 0f, f10, 1f, f1, 1f);
-		    break;
-		default:
-			this.setBlockBounds(0.0f, 0.0f,0.0f, 1.0f,0.25f, 1.0f);
-		    break;
-		}
-
-	    }
 }
