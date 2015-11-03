@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.BioStace.AutoTransfer.AutoTransfer;
 import com.BioStace.AutoTransfer.Registry.BlockRegistry;
+import com.BioStace.AutoTransfer.line.LineMannager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -39,6 +40,7 @@ public class BlockTransOrbit extends Block {
 		this.setLightLevel(1.0f);
 		this.setHarvestLevel("pickaxe", 0);
 		this.setStepSound(Block.soundTypeMetal);
+		this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 0.25f, 1.0f);
 	}
 
 	/*
@@ -69,29 +71,33 @@ public class BlockTransOrbit extends Block {
 			}
 		}
 		if (i == 2) {
+			if (r.get(0) && r.get(2)) {
+				world.setBlockMetadataWithNotify(x, y, z, 2, 2);
+				LineMannager.addPoint(world, x, y, z);
+				return;
+			}
+			if (r.get(0) && r.get(3)) {
+				world.setBlockMetadataWithNotify(x, y, z, 3, 2);
+				LineMannager.addPoint(world, x, y, z);
+				return;
+			}
+			if (r.get(1) && r.get(2)) {
+				world.setBlockMetadataWithNotify(x, y, z, 4, 2);
+				LineMannager.addPoint(world, x, y, z);
+				return;
+			}
+			if (r.get(1) && r.get(3)) {
+				world.setBlockMetadataWithNotify(x, y, z, 5, 2);
+				LineMannager.addPoint(world, x, y, z);
+				return;
+			}
+			//
 			if (r.get(0) && r.get(1)) {
 				world.setBlockMetadataWithNotify(x, y, z, 0, 2);
 				return;
 			}
 			if (r.get(2) && r.get(3)) {
 				world.setBlockMetadataWithNotify(x, y, z, 1, 2);
-				return;
-			}
-			//=
-			if (r.get(0) && r.get(2)) {
-				world.setBlockMetadataWithNotify(x, y, z, 2, 2);
-				return;
-			}
-			if (r.get(0) && r.get(3)) {
-				world.setBlockMetadataWithNotify(x, y, z, 3, 2);
-				return;
-			}
-			if (r.get(1) && r.get(2)) {
-				world.setBlockMetadataWithNotify(x, y, z, 4, 2);
-				return;
-			}
-			if (r.get(1) && r.get(3)) {
-				world.setBlockMetadataWithNotify(x, y, z, 5, 2);
 				return;
 			}
 		}
@@ -104,10 +110,10 @@ public class BlockTransOrbit extends Block {
 	/*
 	 * Block Graph
 	 */
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon (int side, int metadata) {
+	public IIcon getIcon(int side, int metadata) {
 		if (side != 1) {
 			return this.iconBase;
 		}
@@ -119,20 +125,26 @@ public class BlockTransOrbit extends Block {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons (IIconRegister arg0) {
+	public void registerBlockIcons(IIconRegister arg0) {
 		for (int i = 0; i < iconArray.length; i++) {
 			this.iconArray[i] = arg0.registerIcon(AutoTransfer.MODID
 					+ ":transOrbit_" + i);
 		}
 		this.iconBase = arg0.registerIcon(AutoTransfer.MODID + ":transOrbitBase");
 	}
-	
+
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x,
+			int y, int z) {
+		this.setBlockBoundsBasedOnState(world, x, y, z);
+		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+	}
+
 	/*
 	 * Block Place
 	 */
 
 	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		return World.doesBlockHaveSolidTopSurface(world, x, y - 1, z);
+		return world.doesBlockHaveSolidTopSurface(world, x, y - 1, z);
 	}
 
 	public void onBlockPlacedBy(World world, int x, int y, int z,

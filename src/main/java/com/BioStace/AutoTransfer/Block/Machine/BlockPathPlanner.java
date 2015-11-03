@@ -20,6 +20,7 @@ public class BlockPathPlanner extends BlockContainer{
 		this.setHarvestLevel("pickaxe", 2);
 		this.setStepSound(Block.soundTypeMetal);
 		this.setHardness(2F);
+		
 	}
 
 	@Override
